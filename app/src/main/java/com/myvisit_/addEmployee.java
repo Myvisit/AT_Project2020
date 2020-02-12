@@ -113,7 +113,7 @@ public class addEmployee extends AppCompatActivity {
             Intent i = new Intent(getApplicationContext(), Fragment1.class);
             startActivity(i);
 
-            //FragmentTransaction f = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction f = getSupportFragmentManager().beginTransaction();
             //f.replace(R.id.fragment_container, new messagesFragment());
             //f.commit();
 
