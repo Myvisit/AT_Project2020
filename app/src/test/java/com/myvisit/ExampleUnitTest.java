@@ -1,4 +1,4 @@
-package com.myvisit_;
+package com.myvisit;
 
 import org.junit.Test;
 
