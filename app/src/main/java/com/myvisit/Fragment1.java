@@ -1,4 +1,4 @@
-package com.myvisit.ui;
+package com.myvisit;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,14 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.myvisit.R;
-
-public class HomeFragment extends Fragment {
+public class Fragment1 extends Fragment {
 
 
     public View onCreateView(LayoutInflater inflater,
                              @NonNull ViewGroup container, @NonNull Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment1, container, false);
 
+        return v;
     }
+
 }
+

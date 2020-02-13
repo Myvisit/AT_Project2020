@@ -1,4 +1,4 @@
-package com.myvisit.ui;
+package com.myvisit;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment;
 
 import com.myvisit.R;
 
-public class messagesFragment extends Fragment {
+public class settingsFragment extends Fragment {
 
     public View onCreateView( LayoutInflater inflater,
                               @NonNull ViewGroup container, @NonNull Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_messages, container, false);
+        return inflater.inflate(R.layout.fragment_settings, container, false);
+
 
     }
-
 }

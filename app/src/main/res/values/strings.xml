@@ -4,6 +4,8 @@
     <string name="message">Messages</string>
     <string name="group_message">Groups Message</string>
     <string name="all_message">All Messages</string>
+    <string name="send_message">send Messages</string>
+    <string name="write_message">write your message here...</string>
 
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
