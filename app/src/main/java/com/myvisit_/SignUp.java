@@ -33,6 +33,7 @@ public class SignUp extends AppCompatActivity {
 
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+
        fullname = findViewById(R.id.signupfullname);
         email = findViewById(R.id.signupemail);
         password = findViewById(R.id.signuppassword);
@@ -114,12 +115,11 @@ public class SignUp extends AppCompatActivity {
                                         Toast.makeText(SignUp.this , "SignUp unsuccessful, Please try again." , Toast.LENGTH_SHORT).show();
 
 
-
                                     }
                                     else
                                     {
 
-                                        startActivity(new Intent(SignUp.this , loggED.class));
+                                        //startActivity(new Intent(SignUp.this , loggED.class));
                                         Toast.makeText(SignUp.this , "Hi , Succeeded" , Toast.LENGTH_SHORT).show();
 
 
@@ -130,7 +130,6 @@ public class SignUp extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(SignUp.this , "Error has ocurred" , Toast.LENGTH_SHORT).show();
-
                 }
 
 

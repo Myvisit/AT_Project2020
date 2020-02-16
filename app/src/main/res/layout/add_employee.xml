@@ -80,6 +80,7 @@
         android:layout_marginTop="260dp"
         android:layout_marginStart="100dp"
         android:hint="@string/id"
+        android:inputType="text"
         android:textSize="20sp"
         />
 
@@ -115,6 +116,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="100dp"
         android:hint="@string/full_name"
+        android:inputType="text"
         android:textSize="20sp"
         android:layout_below="@+id/text_card"
         />
@@ -151,6 +153,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="100dp"
         android:hint="@string/mobile"
+        android:inputType="number"
         android:textSize="20sp"
         android:layout_below="@+id/text_fullname"
         />
@@ -187,6 +190,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="100dp"
         android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:textSize="20sp"
         android:layout_below="@+id/text_mobile"
         />
@@ -223,6 +227,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginStart="100dp"
         android:hint="@string/position"
+        android:inputType="text"
         android:textSize="20sp"
         android:layout_below="@+id/text_email"
         />

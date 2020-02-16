@@ -35,7 +35,7 @@ public class Home extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new HomeFragment()).commit();
+                new com.myvisit_.HomeFragment()).commit();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -57,8 +57,8 @@ public class Home extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
         //navigationView.setNavigationItemSelectedListener(Home.this);
         View headText = navigationView.getHeaderView(0);
-        TextView textSignUp = headText.findViewById(R.id.signUp);
-        textSignUp.setOnClickListener(new View.OnClickListener() {
+        TextView textSignin = headText.findViewById(R.id.signUp);
+        textSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, Login.class);
@@ -107,7 +107,7 @@ public class Home extends AppCompatActivity {
         Class fragmentClass;
         switch(menuItem.getItemId()) {
             case R.id.nav_home:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = com.myvisit_.HomeFragment.class;
                 getSupportActionBar().setTitle("Home");
                 break;
             case R.id.nav_notification:
@@ -119,7 +119,7 @@ public class Home extends AppCompatActivity {
                 getSupportActionBar().setTitle("Help");
                 break;
             default:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = com.myvisit_.HomeFragment.class;
                 getSupportActionBar().setTitle("Home");
         }
 
@@ -165,7 +165,7 @@ public class Home extends AppCompatActivity {
 
                     switch (item.getItemId()) {
                         case R.id.navigation_home:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = new com.myvisit_.HomeFragment();
                             getSupportActionBar().setTitle("Home");
                             break;
                         case R.id.navigation_messages:

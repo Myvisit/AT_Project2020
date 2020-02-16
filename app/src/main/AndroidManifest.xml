@@ -25,6 +25,11 @@
         <activity android:name=".GroupChatActivity" />
         <activity android:name=".addEmployee" />
         <activity android:name=".Fragment1" />
+        <activity android:name=".Login" />
+        <activity android:name=".loggED" />
+        <activity android:name=".SignUp" />
+
+
 
     </application>
 

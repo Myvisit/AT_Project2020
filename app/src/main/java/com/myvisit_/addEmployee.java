@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
@@ -31,13 +34,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class addEmployee extends AppCompatActivity {
-    private static final String TAG = "addEmployee";
+    //private static final String TAG = "addEmployee";
 
     private EditText textCard, textFullName, textMobile, textEmail, textPosition;
     private Button btnAdd;
 
+    //private static final String card , email , fullName , mobile , position ;
+
     //private FirebaseDatabase mFirebaseDatabase;
-    //private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
     //private FirebaseAuth.AuthStateListener mAuthListener;
     //private DatabaseReference myRef;
 
@@ -54,6 +59,7 @@ public class addEmployee extends AppCompatActivity {
         //myRef = FirebaseDatabase.getInstance().getReference("Employee");
 
         fstore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         textCard =  (EditText)findViewById(R.id.text_card);
         textFullName = (EditText) findViewById(R.id.text_fullname);
@@ -63,9 +69,6 @@ public class addEmployee extends AppCompatActivity {
 
         //mFirebaseDatabase = FirebaseDatabase.getInstance();
         //myRef = mFirebaseDatabase.getReference();
-        //fstore = FirebaseFirestore.getInstance();
-        //colRef = fstore.collection("Employee");
-
        // myRef = FirebaseDatabase.getInstance().getReference();
 
         btnAdd = (Button) findViewById(R.id.button);
@@ -80,45 +83,87 @@ public class addEmployee extends AppCompatActivity {
     }
 
     public void addUser2(){
-        String card = textCard.getText().toString();
-        String fullName = textFullName.getText().toString();
-        String mobile = textMobile.getText().toString();
-        String email = textEmail.getText().toString();
-        String position = textPosition.getText().toString();
+        final String card = textCard.getText().toString();
+        final String fullName = textFullName.getText().toString();
+        final String mobile = textMobile.getText().toString();
+        final String email = textEmail.getText().toString();
+        final String position = textPosition.getText().toString();
+
+        if (card.isEmpty()){
+            textCard.setError("Please enter your Id");
+            textCard.requestFocus();
+        }
+
+        if (fullName.isEmpty()){
+            textFullName.setError("Please enter your FullName");
+            textFullName.requestFocus();
+        }
+
+        if (mobile.isEmpty()){
+            textMobile.setError("Please enter your Mobile ");
+            textMobile.requestFocus();
+
+        }
+        if (email.isEmpty()){
+            textEmail.setError("Please repeate Email");
+            textEmail.requestFocus();
+
+        }
+        if (position.isEmpty()){
+            textPosition.setError("Please enter your Position");
+            textPosition.requestFocus();
+
+        }
 
         if(!TextUtils.isEmpty(card) && !TextUtils.isEmpty(fullName) && !TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(position)    ) {
 
-            Map<String, String> userMap = new HashMap<>();
-
-            userMap.put("id", card);
-            userMap.put("fname", fullName);
-            userMap.put("mobile", mobile);
-            userMap.put("email", email);
-            userMap.put("position", position);
-
-            fstore.collection("Employee").add(userMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            mAuth.createUserWithEmailAndPassword(email,card).addOnCompleteListener(addEmployee.this, new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Toast.makeText(getApplicationContext(), "Add", Toast.LENGTH_LONG).show();
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(!task.isSuccessful()){
+                        Toast.makeText(addEmployee.this , "SignUp unsuccessful, Please try again." , Toast.LENGTH_SHORT).show();
 
+                    } else {
+                        //startActivity(new Intent(addEmployee.this , loggED.class));
+                        Toast.makeText(addEmployee.this , "Hi , Succeeded" , Toast.LENGTH_SHORT).show();
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                        Map<String, Object> userMap = new HashMap<>();
+
+                        userMap.put("id", card);
+                        userMap.put("fname", fullName);
+                        userMap.put("mobile", mobile);
+                        userMap.put("email", email);
+                        userMap.put("position", position);
+
+                        fstore.collection("Employee").document(mAuth.getCurrentUser().getUid()).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getApplicationContext(), "Add Employee successful.", Toast.LENGTH_LONG).show();
+
+                                Intent i = new Intent(getApplicationContext(), loggED.class);
+                                startActivity(i);
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
                 }
             });
 
-            Intent i = new Intent(getApplicationContext(), Fragment1.class);
-            startActivity(i);
+            //Intent i = new Intent(getApplicationContext(), messagesFragment.class);
+            //startActivity(i);
 
-            FragmentTransaction f = getSupportFragmentManager().beginTransaction();
+            //FragmentTransaction f = getSupportFragmentManager().beginTransaction();
             //f.replace(R.id.fragment_container, new messagesFragment());
             //f.commit();
 
         }else {
-            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Required to Fill", Toast.LENGTH_LONG).show();
 
         }
     }
@@ -141,13 +186,13 @@ public class addEmployee extends AppCompatActivity {
             textEmail.setText("");
             textPosition.setText("");
 
-            Toast.makeText(getApplicationContext(), "Add", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Add Employee Successful.", Toast.LENGTH_LONG).show();
 
             Intent i = new Intent(getApplicationContext(),Fragment1.class);
             startActivity(i);
 
         }else {
-            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Error to Add Employee .", Toast.LENGTH_LONG).show();
 
         }
     }
@@ -183,199 +228,14 @@ public class addEmployee extends AppCompatActivity {
         }
     }
 
-    //@Override
-    public void onClick(View v) {
-
-        /*colRef.add(userMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(getApplicationContext(), "Add successfully", Toast.LENGTH_LONG).show();
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), " Error", Toast.LENGTH_LONG).show();
-            }
-        });
-
-         */
-
-
-/*
-
-
-                colRef.document("1").set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Add successfully", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), " Error", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-*/
-        textCard =  (EditText)v.findViewById(R.id.text_card);
-        textFullName = (EditText) v.findViewById(R.id.text_fullname);
-        textMobile = (EditText) v.findViewById(R.id.text_mobile);
-        textEmail = (EditText) v.findViewById(R.id.text_email);
-        textPosition = (EditText) v.findViewById(R.id.text_position);
-
-                String card = textCard.getText().toString();
-                String fullName = textFullName.getText().toString();
-                String mobile = textMobile.getText().toString();
-                String email = textEmail.getText().toString();
-                String position = textPosition.getText().toString();
-
-        UserInformation userInformation = new UserInformation(card, fullName, mobile, email, position);
-
-        myRef.child("Employee").setValue(userInformation)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Add successfully", Toast.LENGTH_LONG).show();
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-
-                            }
-                        });
-
-        switch (v.getId()){
-            case R.id.button:
-                Intent i = new Intent(getApplicationContext(),Fragment1.class);
-                startActivity(i);
-                break ;
-
-        }
-
-
-    }
-
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }*/
 
 }
 
 
-
-        /*if(TextUtils.isEmpty(card)){
-                    textCard.setError("Id number is required.");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(fullName)){
-                    textFullName.setError(" number is required.");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(mobile)){
-                    textMobile.setError("Full name is required.");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(email)){
-                    textEmail.setError("Email is required.");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(position)){
-                    textPosition.setError("position is required.");
-                    return;
-                }
-*/
-
-        /*UserInformation userInformation = new UserInformation(card, fullName, mobile, email, position);
-
-        fstore.collection("Employee").document("emp4").set(userInformation)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Add successfully", Toast.LENGTH_LONG).show();
-
-                            //Intent i = new Intent(getApplicationContext(),Fragment1.class);
-                            //startActivity(i);
-
-                        } else {
-                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-
-
-
-         */
-
-        /*fstore.collection("Employee")
-                .add(userMap)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        //Log.d(TAG, "Add successfully with ID: " + documentReference.getId());
-                        Intent i = new Intent(getApplicationContext(),Fragment1.class);
-                        startActivity(i);
-
-                        Toast.makeText(getApplicationContext(), "Add successfully", Toast.LENGTH_SHORT).show();
-
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-*/
-        //DocumentReference df = fstore.collection("Employee").document("emp4");
-
-        //userInformation.setId(card);
-        //userInformation.setFname(fullName);
-        //userInformation.setPhone_num(mobile);
-        //userInformation.setEmail(email);
-        //userInformation.setPosition(position);
-
-        /*df.set(userInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Intent i = new Intent(getApplicationContext(),Fragment1.class);
-                    startActivity(i);
-                    //Toast.makeText(addEmployee.this, "add Employee successfull " , Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    //Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-         */
-
-
-
-
-                /*
-
-                if(!card.equals("") && !fullName.equals("") && !mobile.equals("") && !email.equals("") && !position.equals("")){
-                    UserInformation userInformation = new UserInformation(card,fullName,mobile,email,position);
-
-                    myRef.child("Employee").setValue(userInformation);
-                    Toast.makeText(getApplicationContext(),"New Information has been saved.",Toast.LENGTH_SHORT).show();
-                    textCard.setText("");
-                    textFullName.setText("");
-                    textMobile.setText("");
-                    textEmail.setText("");
-                    textPosition.setText("");
-                }else{
-                    Toast.makeText(getApplicationContext(),"Fill out all the fields",Toast.LENGTH_SHORT).show();
-                    //toastMessage("Fill out all the fields");
-                }
-
-               */

@@ -57,8 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.837"
-        app:srcCompat="@drawable/time"
-        android:contentDescription="@string/image_pro">
+        app:srcCompat="@drawable/time">
 
     </ImageView>
 
@@ -86,8 +85,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.316"
         android:layout_margin="10dp"
-        app:srcCompat="@drawable/time"
-        android:contentDescription="@string/image_pro">
+        app:srcCompat="@drawable/time">
 
     </ImageView>
 
@@ -102,8 +100,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.567"
-        app:srcCompat="@drawable/time"
-        android:contentDescription="@string/image_pro">
+        app:srcCompat="@drawable/time">
 
     </ImageView>
 
